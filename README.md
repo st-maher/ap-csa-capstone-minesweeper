@@ -4,7 +4,7 @@ A starter project for the AP Computer Science A Unit 9 Capstone Project: Mineswe
 
 ## Getting Started
 
-See the [setup guide](../code-org/unit9/project/setup-vscode-github.adoc) for instructions on installing Java, VSCode, and Git.
+See the [setup guide](https://github.com/EMaher/JavaPlayground/blob/main/code-org/unit9/project/setup-vscode-github.adoc) for instructions on installing Java, VSCode, and Git.
 
 ### Quick Start
 
