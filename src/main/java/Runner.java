@@ -10,6 +10,8 @@ public class Runner {
     public static void main(String[] args) {
         // TODO: implement a move bomb function
 
+        boolean debug = true;
+
         // User interface:
         Scanner s = new Scanner(System.in);
         System.out.println("How big should the board be (it can not be 10+)");
@@ -31,13 +33,19 @@ public class Runner {
                 running = false;
                 break;
             } else if (input.length()==4) {
-                    if (input.substring(0,2).equals("F ")) {// flag(row, col)
+                if (input.substring(0,2).equals("F ")) {// flag(row, col)
                     int i1 = Integer.parseInt(input.substring(2,3));
                     int i2 = Integer.parseInt(input.substring(3,4));
+                    if (debug) {
+                        System.out.println("index is ["+(board.len()-i1)+"]["+(i2-1)+"]");
+                    }
                     board.flag(board.len()-i1, i2-1);
                 } else if (input.substring(0,2).equals("R ")) {// (row, col)
                     int i1 = Integer.parseInt(input.substring(2,3));
                     int i2 = Integer.parseInt(input.substring(3,4));
+                    if (debug) {
+                        System.out.println("index is ["+(board.len()-i1)+"]["+(i2-1)+"]");
+                    }
                     board.reveal(board.len()-i1, i2-1);
                 } else {
                     System.out.println("Invalid input");

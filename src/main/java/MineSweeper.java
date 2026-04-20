@@ -57,7 +57,7 @@ public class MineSweeper {
         int count = 0;
         for (int off1=-1; off1<=1; off1++) {
             for (int off2=-1; off2<=1; off2++) {
-                if (board[i1+off1][i2+off2] instanceof BombTile) {
+                if (inbounds(i1+off1, i2+off2) && board[i1+off1][i2+off2] instanceof BombTile) {
                     count++;
                 }
             }
