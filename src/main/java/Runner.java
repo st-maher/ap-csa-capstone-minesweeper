@@ -13,25 +13,35 @@ public class Runner {
         // User interface:
         Scanner s = new Scanner(System.in);
         System.out.println("How big should the board be (it can not be 10+)");
-        int len = s.nextInt();
+        int len = Integer.parseInt(s.next());
         MineSweeper board = new MineSweeper(10, len, len);
         boolean running = true;
         while (running) {
+            if (board.isLost()) {
+                System.out.println("You Lost!");
+                board.printAll();
+                running=false;
+                break;
+            }
             board.print();
-            System.out.println("what move do you want to make ('q' or 'R row column' or 'F row column')?");
+            System.out.println("what move do you want to do ('q' or 'R rowcolumn' or 'F rowcolumn')?");
             String input = s.nextLine();
             System.out.println("(your input is "+input+")");
             if (input.equals("q")) {
                 running = false;
                 break;
-            } else if (input.substring(0,2).equals("F ")) {// flag(row, col)
-                int i1 = Integer.parseInt(input.substring(2,3));
-                int i2 = Integer.parseInt(input.substring(4,5));
-                board.flag(i1, i2);
-            } else if (input.substring(0,2).equals("R ")) {// (row, col)
-                int i1 = Integer.parseInt(input.substring(2,3));
-                int i2 = Integer.parseInt(input.substring(4,5));
-                board.reveal(i1, i2);
+            } else if (input.length()==4) {
+                    if (input.substring(0,2).equals("F ")) {// flag(row, col)
+                    int i1 = Integer.parseInt(input.substring(2,3));
+                    int i2 = Integer.parseInt(input.substring(3,4));
+                    board.flag(board.len()-i1, i2-1);
+                } else if (input.substring(0,2).equals("R ")) {// (row, col)
+                    int i1 = Integer.parseInt(input.substring(2,3));
+                    int i2 = Integer.parseInt(input.substring(3,4));
+                    board.reveal(board.len()-i1, i2-1);
+                } else {
+                    System.out.println("Invalid input");
+                }
             } else {
                 System.out.println("Invalid input");
             }

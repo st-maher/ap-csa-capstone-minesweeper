@@ -1,5 +1,6 @@
 public class MineSweeper {
     private Tile[][] board;
+    private boolean lost;
     public MineSweeper(int bombs, int rows, int cols) {
         // initialize board
         board = new Tile[rows][cols];
@@ -8,21 +9,22 @@ public class MineSweeper {
                 double chance = (double) bombs / ((rows-1-i1) * cols + (cols-1-i2));
                 if (Math.random()<chance) {
                     board[i1][i2] = new BombTile();
+                    bombs-=1;
                 } else {
                     board[i1][i2] = new EmptyTile();
                 }
             }
         }
+        lost = false;
     }
     //if survived returns true
     //coords in first quadrent
-    public boolean reveal(int i1, int i2) {
+    public void reveal(int i1, int i2) {
         if (board[i1][i2] instanceof BombTile) {
             board[i1][i2].reveal();
-            return false;
+            lost = true;
         }
         chain(i1,i2);
-        return true;
     }
     //coords in first quadrent
     public void flag(int i1, int i2) {
@@ -30,9 +32,10 @@ public class MineSweeper {
     }
     private void chain(int i1, int i2) {
         Tile tile = board[i1][i2];
+        if (tile.isRevealed()) {return;}
         //Precondition tile instanceof EmptyTile and i1 and i2 are in bounds
-        if (tile instanceof EmptyTile) {
-            throw new IllegalArgumentException("chain called with "+i1+"and "+i2);
+        if (tile instanceof BombTile) {
+            throw new IllegalArgumentException("chain called with "+i1+" and "+i2);
         }
         tile.reveal();
         int bombs = countBombs(i1, i2);
@@ -42,7 +45,9 @@ public class MineSweeper {
             for (int off1=-1; off1<=1; off1++) {
                 for (int off2=-1; off2<=1; off2++) {
                     if (!(off1==0 && off2==0)) {
-                        chain(i1+off1, i2+off2);
+                        if (inbounds(i1+off1, i2+off2)) {
+                            chain(i1+off1, i2+off2);
+                        }
                     }
                 }
             } 
@@ -67,12 +72,33 @@ public class MineSweeper {
             System.out.println();
         }
     }
+    public void printAll() {
+        for (int row=0; row<board.length; row++) {
+            for (int col=0; col<board[row].length; col++) {
+                System.out.print(board[row][col].show()+" ");
+            }
+            System.out.println();
+        }
+    }
+    public boolean isLost() {return lost;}
+    public boolean inbounds(int i1, int i2) {
+        if (0<=i1 && i1<board.length) {
+            if (0<=i2 && i2<board.length) {
+                return true;
+            }
+        }
+        return false;
+    }
     // public void removeBomb(int i1, int i2) {
     //     if (!board[i1][i2].isRevealed()) {
     //         throw new IllegalArgumentException("can not remove a bomb there");
     //     }
     // }
     // public void addBomb() {
+    public int len() {
+        // TODO Auto-generated method stub
+        return board.length;
+    }
 
     // }
 }
