@@ -14,6 +14,6 @@ public abstract class Tile {
     }
     public abstract String show();
     public final void reveal() {revealed=true;}
-    public final void flag() {flagged=true;}
+    public final void flag() {flagged=!flagged;}
     public final boolean isRevealed() {return revealed;}
 }

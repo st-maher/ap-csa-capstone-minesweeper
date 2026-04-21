@@ -41,7 +41,7 @@ public class MineSweeper {
         int bombs = countBombs(i1, i2);
         EmptyTile et = (EmptyTile) tile;
         et.setBombs(bombs);
-        if (tile instanceof EmptyTile) {
+        if (et.getBombs()==0) {
             for (int off1=-1; off1<=1; off1++) {
                 for (int off2=-1; off2<=1; off2++) {
                     if (!(off1==0 && off2==0)) {
@@ -65,7 +65,13 @@ public class MineSweeper {
         return count;
     }
     public void print() {
+        System.out.print("  ");
+        for (int col=0; col<board[0].length; col++) {
+            System.out.print(col+" ");
+        }
+        System.out.println();
         for (int row=0; row<board.length; row++) {
+            System.out.print(row+" ");
             for (int col=0; col<board[row].length; col++) {
                 System.out.print(board[row][col]+" ");
             }
@@ -99,6 +105,16 @@ public class MineSweeper {
         // TODO Auto-generated method stub
         return board.length;
     }
-
+    public boolean isWon() {
+        if (lost) {throw new IllegalStateException("You can't call isWon if you lost");}
+        for (Tile[] row: board) {
+            for (Tile tile: row) {
+                if (tile instanceof EmptyTile && !tile.isRevealed()) {
+                    return false;
+                }
+            }
+        }
+        return !lost;
+    }
     // }
 }

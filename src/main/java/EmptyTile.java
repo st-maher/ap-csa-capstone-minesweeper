@@ -8,4 +8,5 @@ public class EmptyTile  extends Tile{
         return ""+otherBombs;
     }
     public void setBombs(int bombs) {otherBombs = bombs;}
+    public int getBombs() {return otherBombs;}
 }

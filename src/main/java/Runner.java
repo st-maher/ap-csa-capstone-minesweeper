@@ -9,18 +9,30 @@ import java.util.Scanner;
 public class Runner {
     public static void main(String[] args) {
         // TODO: implement a move bomb function
+        // ToDo: add numbers to sides, test win con, add unflag
 
-        boolean debug = true;
+        boolean debug = false;
 
         // User interface:
         Scanner s = new Scanner(System.in);
-        System.out.println("How big should the board be (it can not be 10+)");
-        int len = Integer.parseInt(s.next());
+        int len;
+        if (debug) {
+            len = 8;
+        } else {
+            System.out.println("How big should the board be (it can not be 10+)");
+            len = Integer.parseInt(s.nextLine());
+        }
+        if (len>=10) {s.close(); throw new IllegalArgumentException("I said that the length can not be 10+");}
         MineSweeper board = new MineSweeper(10, len, len);
         boolean running = true;
         while (running) {
             if (board.isLost()) {
                 System.out.println("You Lost!");
+                board.printAll();
+                running=false;
+                break;
+            } else if (board.isWon()) {
+                System.out.println("You Won!");
                 board.printAll();
                 running=false;
                 break;
@@ -36,17 +48,11 @@ public class Runner {
                 if (input.substring(0,2).equals("F ")) {// flag(row, col)
                     int i1 = Integer.parseInt(input.substring(2,3));
                     int i2 = Integer.parseInt(input.substring(3,4));
-                    if (debug) {
-                        System.out.println("index is ["+(board.len()-i1)+"]["+(i2-1)+"]");
-                    }
-                    board.flag(board.len()-i1, i2-1);
+                    board.flag(i1, i2);
                 } else if (input.substring(0,2).equals("R ")) {// (row, col)
                     int i1 = Integer.parseInt(input.substring(2,3));
                     int i2 = Integer.parseInt(input.substring(3,4));
-                    if (debug) {
-                        System.out.println("index is ["+(board.len()-i1)+"]["+(i2-1)+"]");
-                    }
-                    board.reveal(board.len()-i1, i2-1);
+                    board.reveal(i1, i2);
                 } else {
                     System.out.println("Invalid input");
                 }
