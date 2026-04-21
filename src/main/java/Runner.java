@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class Runner {
     public static void main(String[] args) {
         // TODO: implement a move bomb function
-        // ToDo: add numbers to sides, test win con, add unflag
+        // ToDo: add numbers to sides, test win con, make it so that you can't reveal flagged tiles
 
         boolean debug = false;
 
@@ -53,6 +53,8 @@ public class Runner {
                     int i1 = Integer.parseInt(input.substring(2,3));
                     int i2 = Integer.parseInt(input.substring(3,4));
                     board.reveal(i1, i2);
+                } else if (input.equals("help")) {
+                    board.help();
                 } else {
                     System.out.println("Invalid input");
                 }

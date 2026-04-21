@@ -16,4 +16,9 @@ public abstract class Tile {
     public final void reveal() {revealed=true;}
     public final void flag() {flagged=!flagged;}
     public final boolean isRevealed() {return revealed;}
+    public final boolean equals(Object other) {
+        if (this==other) return true;
+        if (!(this instanceof Tile)) {return false;}
+        return (""+this).equals(other+"");
+    }
 }
