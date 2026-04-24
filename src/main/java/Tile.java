@@ -13,7 +13,13 @@ public abstract class Tile {
         }
     }
     public abstract String show();
-    public final void reveal() {revealed=true;}
+    public final void reveal() {
+        if (!flagged) {
+            revealed=true;
+        } else {
+            System.out.println("You can not reveal flagged tiles");
+        }
+    }
     public final void flag() {flagged=!flagged;}
     public final boolean isRevealed() {return revealed;}
     public final boolean equals(Object other) {

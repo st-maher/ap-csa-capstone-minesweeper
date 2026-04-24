@@ -10,6 +10,7 @@ public class Runner {
     public static void main(String[] args) {
         // TODO: implement a move bomb function
         // ToDo: add numbers to sides, test win con, make it so that you can't reveal flagged tiles
+        //ToDo: fix 'help'
 
         boolean debug = false;
 

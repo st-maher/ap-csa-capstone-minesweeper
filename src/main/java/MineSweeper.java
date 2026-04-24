@@ -129,9 +129,15 @@ public class MineSweeper {
     }
     private Tile[][] getBoard() {return board;}
     public void help() {
-        int i1 = (int) (Math.random()*board.length);
-        int i2 = (int) (Math.random()*board[i1].length);
-        reveal(i1, i2);
+        
+        while (true) {
+            int i1 = (int) (Math.random()*board.length);
+            int i2 = (int) (Math.random()*board[i1].length);
+            if (board[i1][i2] instanceof EmptyTile) {
+                reveal(i1, i2);
+                return;
+            }
+        }
     }
     // }
 }
