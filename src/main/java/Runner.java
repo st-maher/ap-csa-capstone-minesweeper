@@ -10,23 +10,27 @@ import java.util.Scanner;
 public class Runner {
     public static void main(String[] args) {
         // TODO: implement a move bomb function
-        // ToDo: test input history, get player name, get difficulty, make help menu (?), documentation
+        // ToDo: make help menu (?), documentation
 
 
         // User interface:
         Scanner s = new Scanner(System.in);
         var history = new ArrayList<String>();
-        var helpMenu = "Help menu: ";
-        //get len and name
+        var helpMenu = "Help menu: uhh do you know how to play minesweeper?";
+        //get len, bombs, and name
         System.out.println("How big should the board be (it can not be 10+)");
         int len = Integer.parseInt(s.nextLine());
         if (len>=10) {s.close(); throw new IllegalArgumentException("I said that the length can not be 10+");}
+        System.out.println("How many bombs do you want on the board?");
+        int bombs = Integer.parseInt(s.nextLine());
         System.out.println("What is your name (and also your adress)?");
         String name = s.nextLine();
         //game loop
-        MineSweeper board = new MineSweeper(10, len, len);
+        MineSweeper board = new MineSweeper(bombs, len, len);
         boolean running = true;
+        System.out.println(helpMenu);
         while (running) {
+            //test if you won or lost
             if (board.isLost()) {
                 System.out.println(name+", you lost!");
                 board.printAll();
@@ -40,38 +44,40 @@ public class Runner {
                 running=false;
                 break;
             }
+            //gets user input
             board.print();
             System.out.println("what move do you want to do ('q' or 'R rowcolumn' or 'F rowcolumn')?");
             String input = s.nextLine();
             history.add(input);
             System.out.println("(your input is "+input+")");
-            if (input.equals("q")) {
+            //event handler
+            if (input.equals("q")) { //input: q
                 running = false;
                 break;
-            } else if (input.length()==4) {
-                if (input.substring(0,2).equals("F ")) {// flag(row, col)
+            } else if (input.length()==4) { //input: R xx, F xx, help
+                if (input.substring(0,2).equals("F ")) {// //input: F xx
                     int i1 = Integer.parseInt(input.substring(2,3));
                     int i2 = Integer.parseInt(input.substring(3,4));
                     if ((0<=i1 && i1<len) && (0<=i2 && i2<len)) {
-                        System.out.println("That is out of bounds.");
-                    } else {
                         board.flag(i1, i2);
+                    } else {
+                        System.out.println("That is out of bounds.");
                     }
-                } else if (input.substring(0,2).equals("R ")) {// (row, col)
+                } else if (input.substring(0,2).equals("R ")) {//input: R xx
                     int i1 = Integer.parseInt(input.substring(2,3));
                     int i2 = Integer.parseInt(input.substring(3,4));
                     if ((0<=i1 && i1<len) && (0<=i2 && i2<len)) {
-                        System.out.println("That is out of bounds.");
-                    } else {
                         board.reveal(i1, i2);
+                    } else {
+                        System.out.println("That is out of bounds.");
                     }
-                } else if (input.equals("help")) {
+                } else if (input.equals("help")) {//input: help
                     board.help();
                 } else {
                     System.out.println("Invalid input");
                 }
-            } else if (input.equals("?")) {
-                System.out.println("help menu: "+helpMenu);
+            } else if (input.equals("?")) {//input: ?
+                System.out.println(helpMenu);
             } else {
                 System.out.println("Invalid input");
             }

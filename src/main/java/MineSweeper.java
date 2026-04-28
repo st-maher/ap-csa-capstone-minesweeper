@@ -4,6 +4,7 @@ import java.util.Arrays;
 public class MineSweeper {
     private Tile[][] board;
     private boolean lost;
+    //initializes board
     public MineSweeper(int bombs, int rows, int cols) {
         // initialize board
         board = new Tile[rows][cols];
@@ -20,8 +21,7 @@ public class MineSweeper {
         }
         lost = false;
     }
-    //if survived returns true
-    //coords in first quadrent
+    //reveals tile at board[i1][i2]
     public void reveal(int i1, int i2) {
         if (board[i1][i2].isFlagged()) {
             System.out.println("You can not reveal flagged tiles (enter F {position} to unflag the tile).");
@@ -33,10 +33,11 @@ public class MineSweeper {
         }
         chain(i1,i2);
     }
-    //coords in first quadrent
+    //reveals tile at board[i1][i2]
     public void flag(int i1, int i2) {
         board[i1][i2].flag();
     }
+    //reveals tiles around board[i1][i2]
     private void chain(int i1, int i2) {
         Tile tile = board[i1][i2];
         if (tile.isRevealed()) {return;}
@@ -60,7 +61,9 @@ public class MineSweeper {
             } 
         }
     }
+    //counts bombs around i1 and i2
     private int countBombs(int i1, int i2) {
+        if (!(board[i1][i2] instanceof EmptyTile)) {throw new IllegalArgumentException("countBombs method is not supposed to be called on a bomb tile");}
         int count = 0;
         for (int off1=-1; off1<=1; off1++) {
             for (int off2=-1; off2<=1; off2++) {
@@ -71,6 +74,7 @@ public class MineSweeper {
         }
         return count;
     }
+    //prints the board
     public void print() {
         System.out.print("  ");
         for (int col=0; col<board[0].length; col++) {
@@ -85,6 +89,7 @@ public class MineSweeper {
             System.out.println();
         }
     }
+    //prints the fully revealed board
     public void printAll() {
         for (int row=0; row<board.length; row++) {
             for (int col=0; col<board[row].length; col++) {
@@ -93,7 +98,9 @@ public class MineSweeper {
             System.out.println();
         }
     }
+    //returns if you lost
     public boolean isLost() {return lost;}
+    //returns if your indexes are inbounds
     public boolean inbounds(int i1, int i2) {
         if (0<=i1 && i1<board.length) {
             if (0<=i2 && i2<board.length) {
@@ -102,16 +109,12 @@ public class MineSweeper {
         }
         return false;
     }
-    // public void removeBomb(int i1, int i2) {
-    //     if (!board[i1][i2].isRevealed()) {
-    //         throw new IllegalArgumentException("can not remove a bomb there");
-    //     }
-    // }
-    // public void addBomb() {
+    //gets amount of rows in board
     public int len() {
         // TODO Auto-generated method stub
         return board.length;
     }
+    //checks if all EmptyTiles are revealed
     public boolean isWon() {
         if (lost) {throw new IllegalStateException("You can't call isWon if you lost");}
         for (Tile[] row: board) {
@@ -123,15 +126,7 @@ public class MineSweeper {
         }
         return !lost;
     }
-    public boolean equals(Object other) {
-        if (this==other) {return true;}
-        if (!(other instanceof MineSweeper)) {
-            return false;
-        }
-        MineSweeper oth = (MineSweeper) other;
-        return Arrays.deepEquals(board, oth.getBoard());
-    }
-    private Tile[][] getBoard() {return board;}
+    // calls reveal on a random EmptyTile
     public void help() {
         while (!isWon()) {
             int i1 = (int) (Math.random()*board.length);
@@ -142,5 +137,24 @@ public class MineSweeper {
             }
         }
     }
-    // }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Arrays.deepHashCode(board);
+        return result;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        MineSweeper other = (MineSweeper) obj;
+        if (!Arrays.deepEquals(board, other.board))
+            return false;
+        return true;
+    }
 }

@@ -1,4 +1,5 @@
 public class EmptyTile  extends Tile{
+    //amount of bombs around the tile
     private int otherBombs;
     public EmptyTile(){}
     public String show() {

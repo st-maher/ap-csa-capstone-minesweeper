@@ -2,6 +2,7 @@ public abstract class Tile {
     private boolean revealed=false;
     private boolean flagged=false;
     public Tile() {}
+    // print tile
     public final String toString() {
         if (revealed) {
             return show();
@@ -12,8 +13,11 @@ public abstract class Tile {
             return "X";
         }
     }
+    //get revealed symbol
     public abstract String show();
+    //reveal tile
     public final void reveal() {revealed=true;}
+    //toggle isFlagged
     public final void flag() {flagged=!flagged;}
     public final boolean isRevealed() {return revealed;}
     public final boolean isFlagged() {return flagged;}
