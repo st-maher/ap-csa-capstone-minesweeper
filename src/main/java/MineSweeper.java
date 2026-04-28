@@ -23,6 +23,10 @@ public class MineSweeper {
     //if survived returns true
     //coords in first quadrent
     public void reveal(int i1, int i2) {
+        if (board[i1][i2].isFlagged()) {
+            System.out.println("You can not reveal flagged tiles (enter F {position} to unflag the tile).");
+            return;
+        }
         if (board[i1][i2] instanceof BombTile) {
             board[i1][i2].reveal();
             lost = true;
@@ -129,11 +133,10 @@ public class MineSweeper {
     }
     private Tile[][] getBoard() {return board;}
     public void help() {
-        
-        while (true) {
+        while (!isWon()) {
             int i1 = (int) (Math.random()*board.length);
             int i2 = (int) (Math.random()*board[i1].length);
-            if (board[i1][i2] instanceof EmptyTile) {
+            if (board[i1][i2] instanceof EmptyTile && !board[i1][i2].isRevealed()) {
                 reveal(i1, i2);
                 return;
             }
