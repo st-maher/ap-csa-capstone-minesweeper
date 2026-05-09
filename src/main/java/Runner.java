@@ -16,7 +16,6 @@ public class Runner {
         // User interface:
         Scanner s = new Scanner(System.in);
         var history = new ArrayList<String>();
-        var helpMenu = "Help menu: uhh do you know how to play minesweeper?";
         //get len, bombs, and name
         System.out.println("How big should the board be (it can not be 10+)");
         int len = Integer.parseInt(s.nextLine());
@@ -72,12 +71,12 @@ public class Runner {
                         System.out.println("That is out of bounds.");
                     }
                 } else if (input.equals("help")) {//input: help
-                    board.help();
+                    printHelpMenu();
                 } else {
                     System.out.println("Invalid input");
                 }
             } else if (input.equals("?")) {//input: ?
-                System.out.println(helpMenu);
+                printHelpMenu();
             } else {
                 System.out.println("Invalid input");
             }
@@ -85,4 +84,8 @@ public class Runner {
         System.out.println("The program has ended");
         s.close();
     }        
+
+    public static void printHelpMenu() {
+        System.out.println("Help menu: uhh do you know how to play minesweeper?");
+    }   
 }
