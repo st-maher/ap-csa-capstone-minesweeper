@@ -1,8 +1,23 @@
 import java.util.Arrays;
 
+/**
+ * Represents the Minesweeper game board.
+ * Board consists of a grid of tiles, which can be either bomb tiles or empty tiles.
+ */
 public class MineSweeper {
     private Tile[][] board;
     private boolean lost;
+
+    /**
+     * Constructs a new Minesweeper board with the specified number of bombs and dimensions.
+     * The board is initialized with the specified number of bombs randomly placed.
+     * Every position has an equal chance of having a bomb, 
+     * and the number of bombs is guaranteed to be correct.
+     * 
+     * @param bombs the number of bombs to place on the board
+     * @param rows the number of rows in the board
+     * @param cols the number of columns in the board
+     */
     //initializes board
     public MineSweeper(int bombs, int rows, int cols) {
         // initialize board
@@ -20,7 +35,12 @@ public class MineSweeper {
         }
         lost = false;
     }
-    //reveals tile at board[i1][i2]
+
+    /**
+     * Reveals the tile at the specified position on the board.
+     * @param i1 row index of the tile to reveal
+     * @param i2 column index of the tile to reveal
+     */
     public void reveal(int i1, int i2) {
         if (board[i1][i2].isFlagged()) {
             System.out.println("You can not reveal flagged tiles (enter F {position} to unflag the tile).");
@@ -32,14 +52,28 @@ public class MineSweeper {
         }
         chain(i1,i2);
     }
-    //reveals tile at board[i1][i2]
+    
+    /**
+     * Toggles the flagged state of the tile at the specified position on the board.
+     * 
+     * @param i1 row index of the tile to flag
+     * @param i2 column index of the tile to flag
+     */
     public void flag(int i1, int i2) {
         board[i1][i2].flag();
     }
-    //reveals tiles around board[i1][i2]
+    /**
+     * Flood fill reveals tiles around the specified position on the board.
+     * Tile must be an instance of EmptyTile and the position must be in bounds.
+     * 
+     * @param i1 row index of the tile to start the flood fill
+     * @param i2 column index of the tile to start the flood fill
+     */
     private void chain(int i1, int i2) {
         Tile tile = board[i1][i2];
+
         if (tile.isRevealed()) {return;}
+
         //Precondition tile instanceof EmptyTile and i1 and i2 are in bounds
         if (tile instanceof BombTile) {
             throw new IllegalArgumentException("chain called with "+i1+" and "+i2);
@@ -60,7 +94,15 @@ public class MineSweeper {
             } 
         }
     }
-    //counts bombs around i1 and i2
+
+    /**
+     * Counts the number of bombs around the specified position on the board.
+     * Tile must be an instance of EmptyTile and the position must be in bounds.
+     * 
+     * @param i1 row index of the tile to count bombs around
+     * @param i2 column index of the tile to count bombs around
+     * @return the number of bombs around the specified position
+     */
     private int countBombs(int i1, int i2) {
         if (!(board[i1][i2] instanceof EmptyTile)) {throw new IllegalArgumentException("countBombs method is not supposed to be called on a bomb tile");}
         int count = 0;
@@ -73,7 +115,9 @@ public class MineSweeper {
         }
         return count;
     }
-    //prints the board
+    /**
+     * Prints the current state of the board.
+     */
     public void print() {
         System.out.print("  ");
         for (int col=0; col<board[0].length; col++) {
@@ -88,7 +132,9 @@ public class MineSweeper {
             System.out.println();
         }
     }
-    //prints the fully revealed board
+    /**
+     * Prints the fully revealed board.
+     */
     public void printAll() {
         for (int row=0; row<board.length; row++) {
             for (int col=0; col<board[row].length; col++) {
@@ -97,9 +143,18 @@ public class MineSweeper {
             System.out.println();
         }
     }
-    //returns if you lost
+    /**
+     * Returns whether the player has lost the game.
+     * @return true if the player has lost, false otherwise
+     */
     public boolean isLost() {return lost;}
-    //returns if your indexes are inbounds
+
+    /**
+     * Checks if the specified indexes are within the bounds of the board.
+     * @param i1 row index to check
+     * @param i2 column index to check
+     * @return true if the indexes are within bounds, false otherwise
+     */
     public boolean inbounds(int i1, int i2) {
         if (0<=i1 && i1<board.length) {
             if (0<=i2 && i2<board.length) {
@@ -108,11 +163,13 @@ public class MineSweeper {
         }
         return false;
     }
-    //gets amount of rows in board
-    public int len() {
-        // TODO Auto-generated method stub
-        return board.length;
-    }
+
+    /**
+     * Checks if the player has won the game.
+     * Can't be called if the player has lost.
+     * 
+     * @return true if the player has won, false otherwise
+     */
     //checks if all EmptyTiles are revealed
     public boolean isWon() {
         if (lost) {throw new IllegalStateException("You can't call isWon if you lost");}
@@ -125,7 +182,9 @@ public class MineSweeper {
         }
         return !lost;
     }
-    // calls reveal on a random EmptyTile
+    /**
+     * Reveals non-bomb tiles randomly until the player has won.
+     */
     public void help() {
         while (!isWon()) {
             int i1 = (int) (Math.random()*board.length);
@@ -136,6 +195,10 @@ public class MineSweeper {
             }
         }
     }
+    /**
+     * Returns the hash code of the board.
+     * @return the hash code of the board
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -143,6 +206,11 @@ public class MineSweeper {
         result = prime * result + Arrays.deepHashCode(board);
         return result;
     }
+    /**
+     * Compares this board to another object for equality.
+     * @param obj the object to compare with
+     * @return true if the boards are equal, false otherwise
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
