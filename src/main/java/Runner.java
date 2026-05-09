@@ -7,9 +7,6 @@ import java.util.Scanner;
  */
 public class Runner {
     public static void main(String[] args) {
-        // TODO: implement a move bomb function
-        // ToDo: make help menu (?), documentation
-
         // User interface:
         Scanner s = new Scanner(System.in);
         var history = new ArrayList<String>();
