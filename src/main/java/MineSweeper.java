@@ -224,4 +224,5 @@ public class MineSweeper {
             return false;
         return true;
     }
+    public int getLen() {return board.length;}
 }
