@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.function.BiConsumer;
 
 /**
  * Manage user-input
@@ -24,11 +25,11 @@ public class GameManager {
         System.out.println("What is your name (and also your adress)?");
         return s.nextLine();
     }
-    public static void mark(Consumer<Minesweeper> help, String input, Minesweeper board) {
+    public static void mark(BiConsumer<Integer, Integer> action, String input, MineSweeper board) {
         int i1 = Integer.parseInt(input.substring(2, 3));
         int i2 = Integer.parseInt(input.substring(3, 4));
         if ((0 <= i1 && i1 < board.getRows()) && (0 <= i2 && i2 < board.getRows())) {
-            board.flag(i1, i2);
+            action.accept(i1, i2);
         } else {
             System.out.println("That is out of bounds.");
         }
@@ -75,22 +76,9 @@ public class GameManager {
                 break;
             } else if (input.length() == 4) { // input: R xx, F xx, help
                 if (input.substring(0, 2).equals("F ")) {// //input: F xx
-                    mark();
-                    int i1 = Integer.parseInt(input.substring(2, 3));
-                    int i2 = Integer.parseInt(input.substring(3, 4));
-                    if ((0 <= i1 && i1 < len) && (0 <= i2 && i2 < len)) {
-                        board.flag(i1, i2);
-                    } else {
-                        System.out.println("That is out of bounds.");
-                    }
+                    mark(board::flag, input, board);
                 } else if (input.substring(0, 2).equals("R ")) {// input: R xx
-                    int i1 = Integer.parseInt(input.substring(2, 3));
-                    int i2 = Integer.parseInt(input.substring(3, 4));
-                    if ((0 <= i1 && i1 < len) && (0 <= i2 && i2 < len)) {
-                        board.reveal(i1, i2);
-                    } else {
-                        System.out.println("That is out of bounds.");
-                    }
+                    mark(board::reveal, input, board);
                 } else if (input.equals("help")) {// input: help
                     board.help();
                 } else {
