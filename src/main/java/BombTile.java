@@ -6,7 +6,7 @@ public class BombTile extends Tile {
     /**
      * Constructs a new BombTile.
      */
-    public BombTile() {}
+    public BombTile() {super();}
 
     /**
      * Returns the symbol of the tile when revealed.

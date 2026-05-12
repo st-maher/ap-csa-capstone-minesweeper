@@ -9,8 +9,7 @@ public class EmptyTile extends Tile {
     /**
      * Constructs a new EmptyTile.
      */
-    public EmptyTile() {
-    }
+    public EmptyTile() {super();}
 
     /**
      * Returns the symbol of the tile when revealed.

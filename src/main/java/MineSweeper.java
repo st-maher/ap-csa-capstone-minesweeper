@@ -19,12 +19,12 @@ public class MineSweeper {
      * @param cols the number of columns in the board
      */
     //initializes board
-    public MineSweeper(int bombs, int rows, int cols) {
+    public MineSweeper(int bombs, int len) {
         // initialize board
-        board = new Tile[rows][cols];
-        for (int i1=0; i1<rows; i1++) {
-            for (int i2=0; i2<cols; i2++) {
-                double chance = (double) bombs / ((rows-1-i1) * cols + (cols-1-i2));
+        board = new Tile[len][len];
+        for (int i1=0; i1<len; i1++) {
+            for (int i2=0; i2<len; i2++) {
+                double chance = (double) bombs / ((len-1-i1) * len + (len-1-i2+1));
                 if (Math.random()<chance) {
                     board[i1][i2] = new BombTile();
                     bombs-=1;
